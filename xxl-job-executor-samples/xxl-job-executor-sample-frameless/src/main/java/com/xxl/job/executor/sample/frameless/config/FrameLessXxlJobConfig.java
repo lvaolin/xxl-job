@@ -16,7 +16,7 @@ import java.util.Properties;
 public class FrameLessXxlJobConfig {
     private static Logger logger = LoggerFactory.getLogger(FrameLessXxlJobConfig.class);
 
-
+//单例模式
     private static FrameLessXxlJobConfig instance = new FrameLessXxlJobConfig();
     public static FrameLessXxlJobConfig getInstance() {
         return instance;
@@ -27,13 +27,15 @@ public class FrameLessXxlJobConfig {
 
     /**
      * init
+     *
+     * 初始化执行器配置信息
      */
     public void initXxlJobExecutor() {
 
         // load executor prop
         Properties xxlJobProp = loadProperties("xxl-job-executor.properties");
 
-        // init executor
+        // init executor 初始化执行器配置信息
         xxlJobExecutor = new XxlJobSimpleExecutor();
         xxlJobExecutor.setAdminAddresses(xxlJobProp.getProperty("xxl.job.admin.addresses"));
         xxlJobExecutor.setAccessToken(xxlJobProp.getProperty("xxl.job.accessToken"));
@@ -43,11 +45,10 @@ public class FrameLessXxlJobConfig {
         xxlJobExecutor.setPort(Integer.valueOf(xxlJobProp.getProperty("xxl.job.executor.port")));
         xxlJobExecutor.setLogPath(xxlJobProp.getProperty("xxl.job.executor.logpath"));
         xxlJobExecutor.setLogRetentionDays(Integer.valueOf(xxlJobProp.getProperty("xxl.job.executor.logretentiondays")));
-
-        // registry job bean
+        // registry job bean  注册job
         xxlJobExecutor.setXxlJobBeanList(Arrays.asList(new SampleXxlJob()));
 
-        // start executor
+        // start executor 启动job
         try {
             xxlJobExecutor.start();
         } catch (Exception e) {
@@ -56,7 +57,7 @@ public class FrameLessXxlJobConfig {
     }
 
     /**
-     * destroy
+     * destroy  销毁执行器
      */
     public void destroyXxlJobExecutor() {
         if (xxlJobExecutor != null) {
